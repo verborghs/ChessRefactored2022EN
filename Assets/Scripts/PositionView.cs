@@ -9,17 +9,15 @@ using UnityEngine.EventSystems;
 
 public class PositionView : MonoBehaviour, IPointerClickHandler
 {
+    private BoardView _parent;
 
     public Position GridPosition => PositionHelper.GridPosition(transform.position);
 
-    public event EventHandler Clicked;
+    private void Start()
+        => _parent = GetComponentInParent<BoardView>();
+    
 
     public void OnPointerClick(PointerEventData eventData)
-        => OnClicked(EventArgs.Empty);
-
-    protected virtual void OnClicked(EventArgs eventArgs)
-    {
-        var handler = Clicked;
-        handler?.Invoke(this, eventArgs);
-    }
+        => _parent.ChildClicked(this);
+    
 }

@@ -77,6 +77,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BishopBlack
       objectReference: {fileID: 0}
+    - target: {fileID: 9209626431750388098, guid: 6f0f23f04da65f14e951b5045fb1f05a,
+        type: 3}
+      propertyPath: _player
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 493089131441613767, guid: 6f0f23f04da65f14e951b5045fb1f05a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6f0f23f04da65f14e951b5045fb1f05a, type: 3}
