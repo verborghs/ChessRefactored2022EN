@@ -1,0 +1,16 @@
+{
+    "name": "ChessSystem",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6cc0c14e670d14d42b50eb5d9ba35e61"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

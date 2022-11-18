@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public enum Player
+namespace ChessSystem
 {
-    Player1,
-    Player2
+    public enum PieceType
+    {
+        King, Queen, Bishop, Knight, Rook, Pawn
+    }
 }
-
