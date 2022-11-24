@@ -12,6 +12,7 @@ namespace GameSystem
 
         private Board<PieceView> _board;
         private Engine<PieceView> _engine;
+        private BoardView _boardView;
 
         private void Start()
         {
@@ -32,10 +33,8 @@ namespace GameSystem
             foreach (var pieceView in pieceViews)
                 _board.Place(PositionHelper.GridPosition(pieceView.WorldPosition), pieceView);
 
-            var boardView = FindObjectOfType<BoardView>();
-            boardView.PositionClicked += OnPositionClicked;
-
-
+            _boardView = FindObjectOfType<BoardView>();
+            _boardView.PositionClicked += OnPositionClicked;
         }
 
         private void OnPositionClicked(object sender, PositionEventArgs e)
@@ -47,6 +46,10 @@ namespace GameSystem
             {
                 IMoveSet moveSet = _engine.MoveSets.For(piece.Type);
                 List<Position> validPositions = moveSet.Positions(fromPosition);
+
+                _boardView.ActivePosition = validPositions;
+
+
                 Position toPosition = validPositions[0];
 
                 _engine.Move(fromPosition, toPosition);

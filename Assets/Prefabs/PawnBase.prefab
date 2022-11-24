@@ -141,6 +141,11 @@ PrefabInstance:
       propertyPath: _offsets.Array.data[0].y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6850054831836826569, guid: 5f297837b4cdfb84b84888d78cb3b337,
+        type: 3}
+      propertyPath: _type
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8651917271849898653, guid: 5f297837b4cdfb84b84888d78cb3b337,
         type: 3}
       propertyPath: m_Name

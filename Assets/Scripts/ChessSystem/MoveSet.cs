@@ -12,6 +12,8 @@ namespace ChessSystem
     {
         private readonly Board<TPiece> _board;
 
+        protected Board<TPiece> Board => _board ;
+
         public MoveSet(Board<TPiece> board)
         {
             _board = board;
@@ -22,7 +24,7 @@ namespace ChessSystem
 
         public virtual bool Execute(Position fromPosition, Position toPosition)
         {
-            _board.Take(fromPosition);
+            _board.Take(toPosition);
 
             return _board.Move(fromPosition, toPosition);
         }

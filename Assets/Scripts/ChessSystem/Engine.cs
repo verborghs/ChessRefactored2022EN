@@ -9,18 +9,16 @@ namespace ChessSystem
         where TPiece : IPiece
     {
         private readonly Board<TPiece> _board;
+        private readonly MoveSetCollection<TPiece> _moveSetCollection;
 
         public Engine(Board<TPiece> board)
         {
             _board = board;
+            _moveSetCollection = new MoveSetCollection<TPiece>(_board);
         }
 
         public MoveSetCollection<TPiece> MoveSets
-        {   get
-            {
-                return null;
-            }
-        }
+            => _moveSetCollection;
 
         public bool Move(Position fromPosition, Position toPosition)
         {

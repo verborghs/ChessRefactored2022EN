@@ -1,4 +1,6 @@
-﻿namespace BoardSystem
+﻿using System;
+
+namespace BoardSystem
 {
     public struct Position
     {

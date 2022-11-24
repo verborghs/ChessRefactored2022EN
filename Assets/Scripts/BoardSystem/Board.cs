@@ -46,6 +46,7 @@ namespace BoardSystem
     }
 
 
+
     public class Board<TPiece>
     {
         public event EventHandler<PieceMovedEventArgs<TPiece>> PieceMoved;
