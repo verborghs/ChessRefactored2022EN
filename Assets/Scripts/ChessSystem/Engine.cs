@@ -1,4 +1,5 @@
 using BoardSystem;
+using CommandSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,10 +17,10 @@ namespace ChessSystem
 
         public Player CurrentPlayer => _currentPlayer;
 
-        public Engine(Board<TPiece> board)
+        public Engine(Board<TPiece> board, CommandQueue commandQueue)
         {
             _board = board;
-            _moveSetCollection = new MoveSetCollection<TPiece>(_board);
+            _moveSetCollection = new MoveSetCollection<TPiece>(_board, commandQueue);
         }
 
         public MoveSetCollection<TPiece> MoveSets

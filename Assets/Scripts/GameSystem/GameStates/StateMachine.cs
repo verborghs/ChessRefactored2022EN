@@ -10,18 +10,18 @@ namespace GameSystem.GameStates
     {
         private Dictionary<string, State> _states = new Dictionary<string, State>();
 
-        private string _currentStateName;
+        private Stack<string> _currentStateNames = new Stack<string>();
 
         public string InitialState
         {
             set
             {
-                _currentStateName = value;
+                _currentStateNames.Push(value);
                 CurrentState.OnEnter();
             }
         }
 
-        public State CurrentState => _states[_currentStateName];
+        public State CurrentState => _states[_currentStateNames.Peek()];
 
         public void Register(string stateName, State state)
         {
@@ -31,12 +31,36 @@ namespace GameSystem.GameStates
 
         public void MoveTo(string stateName)
         {
+            CurrentState.OnSuspend();
             CurrentState.OnExit();
 
-            _currentStateName = stateName;
+
+            _currentStateNames.Pop();
+            _currentStateNames.Push(stateName);
 
             CurrentState.OnEnter();
+            CurrentState.OnResume();
         }
 
+
+        public void Push(string stateName)
+        {
+            CurrentState.OnSuspend();
+
+            _currentStateNames.Push(stateName);
+
+            CurrentState.OnEnter();
+            CurrentState.OnResume();
+        }
+
+        public void Pop()
+        {
+            CurrentState.OnSuspend();
+            CurrentState.OnExit();
+
+            _currentStateNames.Pop();
+
+            CurrentState.OnResume();
+        }
     }
 }

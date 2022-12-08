@@ -15,5 +15,9 @@ namespace GameSystem.GameStates
 
         public virtual void OnExit() { }
 
+        public virtual void OnSuspend() { }
+
+        public virtual void OnResume() { }
+
     }
 }

@@ -10,5 +10,6 @@ namespace GameSystem.GameStates
     {
         public const string Playing = "Playing";
         public const string Menu = "Menu";
+        public const string Replaying = "Replaying"; 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BoardSystem;
 using ChessSystem;
+using CommandSystem;
 using GameSystem.Helpers;
 using GameSystem.Views;
 using System;
@@ -14,10 +15,20 @@ namespace GameSystem.GameStates
 {
     public class PlayingState : State
     {
+        private readonly CommandQueue _commandQueue;
+
         private Board<PieceView> _board;
         private Engine<PieceView> _engine;
 
         private BoardView _boardView;
+        private ReplayView _replayView;
+
+        private Position? _currentPosition;
+
+        public PlayingState(CommandQueue commandQueue)
+        {
+            _commandQueue = commandQueue;
+        }
 
         public override void OnEnter()
         {
@@ -28,7 +39,7 @@ namespace GameSystem.GameStates
             _board.PieceTaken += (s, e) => e.Piece.Taken();
             _board.PiecePlaced += (s, e) => e.Piece.Placed(PositionHelper.WorldPosition(e.ToPosition));
 
-            _engine = new Engine<PieceView>(_board);
+            _engine = new Engine<PieceView>(_board, _commandQueue);
 
             var op = SceneManager.LoadSceneAsync("Game", LoadSceneMode.Additive);
             op.completed += InitializeScene;
@@ -37,13 +48,24 @@ namespace GameSystem.GameStates
         private void InitializeScene(AsyncOperation obj)
         {
             _boardView = GameObject.FindObjectOfType<BoardView>();
-            if(_boardView != null)
+            if (_boardView != null)
+            {
+                _boardView.PositionClicked -= OnPositionClicked;
                 _boardView.PositionClicked += OnPositionClicked;
+            }
+
+            _replayView = GameObject.FindObjectOfType<ReplayView>();
+            if(_replayView != null)
+            {
+                _replayView.PreviousClicked -= OnPreviousClicked;
+                _replayView.PreviousClicked += OnPreviousClicked;
+            }
 
             var pieceViews = GameObject.FindObjectsOfType<PieceView>();
             foreach (var pieceView in pieceViews)
                 _board.Place(PositionHelper.GridPosition(pieceView.WorldPosition), pieceView);
         }
+
 
         public override void OnExit()
         {
@@ -55,11 +77,39 @@ namespace GameSystem.GameStates
             SceneManager.UnloadSceneAsync("Game");
         }
 
-        private Position? _currentPosition;
+        public override void OnSuspend()
+        {
+            if (_boardView != null)
+                _boardView.PositionClicked -= OnPositionClicked;
+
+            if (_replayView != null)
+                _replayView.PreviousClicked -= OnPreviousClicked;
+            
+        }
+
+        public override void OnResume()
+        {
+            if (_boardView != null)
+            {
+                _boardView.PositionClicked -= OnPositionClicked;
+                _boardView.PositionClicked += OnPositionClicked;
+            }
+
+            if (_replayView != null)
+            {
+                _replayView.PreviousClicked -= OnPreviousClicked;
+                _replayView.PreviousClicked += OnPreviousClicked;
+            }
+        }
+
+        private void OnPreviousClicked(object sender, EventArgs e)
+        {
+            StateMachine.Push(States.Replaying);
+        }
+
 
         private void OnPositionClicked(object sender, PositionEventArgs e)
         {
-
             var pieceClicked = _board.TryGetPieceAt(e.Position, out var clickedPiece);
             var ownPieceClicked = pieceClicked && clickedPiece.Player == _engine.CurrentPlayer;
 
