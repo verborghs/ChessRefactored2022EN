@@ -27,52 +27,61 @@ namespace ChessSystem
 
         public virtual bool Execute(Position fromPosition, Position toPosition)
         {
-            var command = new MoveCommand<TPiece>(_board, fromPosition, toPosition);
 
+            bool taken = _board.TryGetPieceAt(toPosition, out var piece);
 
-            
+            Action execute =  () => {
+                _board.Take(toPosition);
+
+                _board.Move(fromPosition, toPosition);
+            };
+
+            Action undo = () =>
+            {
+                _board.Move(toPosition, fromPosition);
+
+                if (taken)
+                    _board.Place(toPosition, piece);
+            };
+
+            var command = new DelegateCommand(execute, undo);
             _commandQueue.Execute(command);
-
 
             return true;
 
-
-            //_board.Take(toPosition);
-           //
-           //return _board.Move(fromPosition, toPosition);
         }
 
     }
 
-    public class MoveCommand<TPiece> : ICommand
-    {
-        Board<TPiece> _board;
-        Position _fromPosition;
-        Position _toPosition;
-        TPiece _pieceTaken;
-
-        public MoveCommand(Board<TPiece> board, Position fromPosition, Position toPosition)
-        {
-            _board = board;
-            _fromPosition = fromPosition;
-            _toPosition = toPosition;
-        }
-
-        public void Execute()
-        {
-
-            if(_board.TryGetPieceAt(_toPosition, out _pieceTaken))
-                _board.Take(_toPosition);
-
-            _board.Move(_fromPosition, _toPosition);
-        }
-
-        public void Undo()
-        {
-            _board.Move(_toPosition, _fromPosition);
-
-            if (_pieceTaken != null)
-                _board.Place(_toPosition, _pieceTaken);
-        }
-    }
+    //public class MoveCommand<TPiece> : ICommand
+    //{
+    //    Board<TPiece> _board;
+    //    Position _fromPosition;
+    //    Position _toPosition;
+    //    TPiece _pieceTaken;
+    //
+    //    public MoveCommand(Board<TPiece> board, Position fromPosition, Position toPosition)
+    //    {
+    //        _board = board;
+    //        _fromPosition = fromPosition;
+    //        _toPosition = toPosition;
+    //    }
+    //
+    //    public void Execute()
+    //    {
+    //
+    //        if(_board.TryGetPieceAt(_toPosition, out _pieceTaken))
+    //            _board.Take(_toPosition);
+    //
+    //        _board.Move(_fromPosition, _toPosition);
+    //    }
+    //
+    //    public void Undo()
+    //    {
+    //        _board.Move(_toPosition, _fromPosition);
+    //
+    //        if (_pieceTaken != null)
+    //            _board.Place(_toPosition, _pieceTaken);
+    //    }
+    //}
 }

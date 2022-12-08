@@ -55,7 +55,7 @@ namespace GameSystem.Views
         protected virtual void OnPositionClicked(PositionEventArgs e)
         {
             var handler = PositionClicked;
-            handler.Invoke(this, e);
+            handler?.Invoke(this, e);
         }
 
 

@@ -48,7 +48,12 @@ namespace GameSystem.GameStates
        
 
         private void OnNextClicked(object sender, EventArgs e)
-             =>  _commandQueue.Next();
+        { 
+             _commandQueue.Next();
+            if (_commandQueue.IsAtEnd)
+                StateMachine.Pop();
+        }
+            
         
     }
 }

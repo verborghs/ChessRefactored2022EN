@@ -13,7 +13,7 @@ namespace GameSystem
     {
 
         private StateMachine _stateMachine;
-        private CommandQueue _commandQueue;
+        public CommandQueue _commandQueue;
 
 
         private void Start()
